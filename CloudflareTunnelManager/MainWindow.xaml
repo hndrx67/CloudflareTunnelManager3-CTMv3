@@ -1,0 +1,292 @@
+<Window x:Class="CloudflareTunnelManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cloudflare Tunnel Manager" Height="720" Width="1250"
+        MinHeight="720" MinWidth="1250" WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="238" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#0E131D" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="14,18,10,25">
+                    <Border Width="39" Height="39" CornerRadius="11" Background="{StaticResource PrimaryBrush}">
+                        <TextBlock Text="☁" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Cloudflare" FontWeight="SemiBold" FontSize="16" />
+                        <TextBlock Text="Tunnel Manager by hndrx" Foreground="{StaticResource MutedBrush}" FontSize="11" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Button x:Name="DashboardNav" Style="{StaticResource NavButton}" Click="DashboardNav_Click" Background="#1E293B" Foreground="White" Content="●   Dashboard" />
+                    <Button x:Name="TunnelsNav" Style="{StaticResource NavButton}" Click="TunnelsNav_Click" Content="⇄   Tunnels" />
+                    <Button x:Name="SetupNav" Style="{StaticResource NavButton}" Click="SetupNav_Click" Content="＋   Setup tunnel" />
+                    <Button x:Name="LogsNav" Style="{StaticResource NavButton}" Click="LogsNav_Click" Content="≡   Activity logs" />
+                </StackPanel>
+                <Border Grid.Row="3" Background="#151C29" CornerRadius="9" Padding="13" Margin="8,10">
+                    <StackPanel>
+                        <TextBlock Text="CLOUDFLARED" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="SemiBold" />
+                        <TextBlock x:Name="SidebarVersion" Text="Not installed" Margin="0,5,0,0" FontSize="12" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="36,28,36,32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <StackPanel>
+                    <TextBlock x:Name="PageTitle" Text="Tunnel Dashboard" FontSize="27" FontWeight="SemiBold" />
+                    <TextBlock x:Name="PageSubtitle" Text="Monitor and control the Cloudflare connector on this computer." Foreground="{StaticResource MutedBrush}" Margin="0,7,0,0" />
+                </StackPanel>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource SecondaryButton}" Padding="14,8" Content="↻  Refresh" Click="Refresh_Click" />
+            </Grid>
+
+            <Grid x:Name="DashboardPage" Grid.Row="1" Margin="0,28,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <UniformGrid Rows="1" Columns="3">
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,12,0">
+                        <StackPanel><TextBlock Text="SERVICE STATUS" Foreground="{StaticResource MutedBrush}" FontSize="11" FontWeight="SemiBold"/><StackPanel Orientation="Horizontal" Margin="0,14,0,0"><Ellipse x:Name="StatusDot" Width="10" Height="10" Fill="#778195" VerticalAlignment="Center"/><TextBlock x:Name="ServiceStatusText" Text="Checking…" FontSize="20" FontWeight="SemiBold" Margin="10,0,0,0"/></StackPanel></StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,12,0">
+                        <StackPanel><TextBlock Text="STARTUP TYPE" Foreground="{StaticResource MutedBrush}" FontSize="11" FontWeight="SemiBold"/><TextBlock x:Name="StartupTypeText" Text="—" FontSize="20" FontWeight="SemiBold" Margin="0,14,0,0"/></StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                        <StackPanel><TextBlock Text="CONNECTOR VERSION" Foreground="{StaticResource MutedBrush}" FontSize="11" FontWeight="SemiBold"/><TextBlock x:Name="VersionText" Text="—" FontSize="20" FontWeight="SemiBold" Margin="0,14,0,0"/></StackPanel>
+                    </Border>
+                </UniformGrid>
+                <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="24" Margin="0,22,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Windows service controls" FontSize="17" FontWeight="SemiBold" />
+                            <TextBlock Text="Start, stop, or restart the connector without opening a command window." Foreground="{StaticResource MutedBrush}" Margin="0,7,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource SecondaryButton}" Content="Start" Margin="0,0,8,0" Click="StartService_Click" />
+                            <Button Style="{StaticResource SecondaryButton}" Content="Stop" Margin="0,0,8,0" Click="StopService_Click" />
+                            <Button Style="{StaticResource PrimaryButton}" Content="Restart" Click="RestartService_Click" Margin="0,0,8,0" />
+                            <Button Style="{StaticResource SecondaryButton}" Content="Uninstall" Click="UninstallService_Click" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="2" Background="#101722" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="24" Margin="0,22,0,0">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="☁" Foreground="{StaticResource PrimaryBrush}" FontSize="45" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="EmptyTitle" Text="Ready to configure your connector" FontSize="18" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock x:Name="EmptyMessage" Text="Install a remotely managed tunnel using the secure token from your Cloudflare dashboard." Foreground="{StaticResource MutedBrush}" TextAlignment="Center" Margin="0,8,0,18" />
+                        <Button Style="{StaticResource PrimaryButton}" Content="Set up a tunnel" Click="SetupNav_Click" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="TunnelsPage" Grid.Row="1" Margin="0,25,0,0" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="18">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.1*" />
+                            <ColumnDefinition Width="1.6*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,12,0">
+                            <TextBlock Text="Cloudflare Account ID" Foreground="{StaticResource MutedBrush}" FontSize="11" />
+                            <TextBox x:Name="AccountIdBox" Margin="0,6,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                            <TextBlock Text="Scoped API token (session only)" Foreground="{StaticResource MutedBrush}" FontSize="11" />
+                            <PasswordBox x:Name="ApiTokenBox" Margin="0,6,0,0" />
+                        </StackPanel>
+                        <Button Grid.Column="2" Style="{StaticResource PrimaryButton}" Content="Connect &amp; sync" VerticalAlignment="Bottom" Click="SyncTunnels_Click" />
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1" Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid>
+                                <TextBlock Text="Your tunnels" FontSize="16" FontWeight="SemiBold" />
+                                <TextBlock x:Name="TunnelCountText" Text="0" HorizontalAlignment="Right" Foreground="{StaticResource MutedBrush}" />
+                            </Grid>
+                            <ListBox x:Name="TunnelList" Grid.Row="1" Margin="0,12,0,12" SelectionChanged="TunnelList_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="2,3">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding ConfigSource}" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1" Text="{Binding StatusLabel}" Foreground="#32D291" FontSize="11" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <StackPanel Grid.Row="2" Margin="0,0,0,12">
+                                <TextBlock Text="Create a new tunnel" Foreground="{StaticResource MutedBrush}" FontSize="10" />
+                                <TextBox x:Name="NewTunnelNameBox" Margin="0,5,0,7" Padding="8,6" />
+                                <Button Style="{StaticResource PrimaryButton}" Content="＋ Create tunnel" Padding="12,8" Click="CreateTunnel_Click" />
+                            </StackPanel>
+                            <TextBlock Grid.Row="3" Text="API permissions: Tunnel Edit, Zone Read, DNS Edit." Foreground="{StaticResource MutedBrush}" FontSize="10" TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="18">
+                        <Grid>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock x:Name="SelectedTunnelName" Text="Select a tunnel" FontSize="18" FontWeight="SemiBold" />
+                                    <TextBlock x:Name="SelectedTunnelDetails" Text="Its published application routes will appear here." Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,5,0,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button x:Name="ConnectTunnelButton" Style="{StaticResource SecondaryButton}" Content="Start connector" IsEnabled="False" Margin="0,0,8,0" Click="ConnectSelectedTunnel_Click" />
+                                    <Button x:Name="DisconnectTunnelButton" Style="{StaticResource SecondaryButton}" Content="Stop" IsEnabled="False" Click="DisconnectSelectedTunnel_Click" />
+                                </StackPanel>
+                            </Grid>
+                            <DataGrid x:Name="RoutesGrid"
+          Grid.Row="1"
+          Margin="0,16,0,0"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          SelectionMode="Single"
+          SelectionChanged="RoutesGrid_SelectionChanged">
+
+                                <DataGrid.Resources>
+                                    <!-- Selection while the DataGrid has focus -->
+                                    <SolidColorBrush
+            x:Key="{x:Static SystemColors.HighlightBrushKey}"
+            Color="#32445F" />
+
+                                    <SolidColorBrush
+            x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+            Color="#FFFFFF" />
+
+                                    <!-- Selection after clicking somewhere else -->
+                                    <SolidColorBrush
+            x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+            Color="#26364D" />
+
+                                    <SolidColorBrush
+            x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+            Color="#FFFFFF" />
+                                </DataGrid.Resources>
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+            Header="Public hostname"
+            Binding="{Binding Hostname, UpdateSourceTrigger=PropertyChanged}"
+            Width="2*" />
+
+                                    <DataGridComboBoxColumn
+            x:Name="TunnelTypeColumn"
+            Header="Type"
+            SelectedItemBinding="{Binding TunnelType, UpdateSourceTrigger=PropertyChanged}"
+            Width="85" />
+
+                                    <DataGridTextColumn
+            Header="Local address / port"
+            Binding="{Binding Origin, UpdateSourceTrigger=PropertyChanged}"
+            Width="1.7*" />
+
+                                    <DataGridTextColumn
+            Header="Path"
+            Binding="{Binding Path, UpdateSourceTrigger=PropertyChanged}"
+            Width="*" />
+
+                                    <DataGridCheckBoxColumn
+            Header="Skip TLS"
+            Binding="{Binding NoTlsVerify}"
+            Width="Auto" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <TextBlock Grid.Row="2" Text="Examples: portal.example.com → http://localhost:3000  •  api.example.com → http://localhost:8000" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,10,0,0" />
+                            <Grid Grid.Row="3" Margin="0,14,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource SecondaryButton}" Content="＋ Add route" Click="AddRoute_Click" Margin="0,0,8,0" />
+                                    <Button Style="{StaticResource SecondaryButton}" Content="Remove selected" Click="RemoveRoute_Click" Margin="0,0,8,0" />
+                                    <Button x:Name="BindDnsButton" Style="{StaticResource SecondaryButton}" Content="Bind selected DNS" IsEnabled="False" Click="BindDns_Click" />
+                                </StackPanel>
+                                <Button x:Name="SaveRoutesButton" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}" Content="Save configuration" IsEnabled="False" Click="SaveRoutes_Click" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <ScrollViewer x:Name="SetupPage" Grid.Row="1" Margin="0,25,0,0" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="25">
+                        <StackPanel>
+                            <TextBlock Text="1   Get your tunnel token" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="Create a remotely managed tunnel in Cloudflare, choose Windows, then copy its installation command." Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,8,0,16" />
+                            <Button HorizontalAlignment="Left" Style="{StaticResource SecondaryButton}" Content="Open Cloudflare dashboard  ↗" Click="OpenDashboard_Click" />
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="25" Margin="0,16,0,0">
+                        <StackPanel>
+                            <TextBlock Text="2   Enter the connector token" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="Paste either the token itself or the complete cloudflared service install command. It is masked and never written to this app's logs." Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,8,0,13" />
+                            <PasswordBox x:Name="TokenBox" Height="44" PasswordChanged="TokenBox_PasswordChanged" />
+                            <TextBlock x:Name="TokenHint" Text="Waiting for a token" Foreground="{StaticResource MutedBrush}" FontSize="12" Margin="0,7,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="25" Margin="0,16,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="3   Download and install" FontSize="18" FontWeight="SemiBold" />
+                                <TextBlock Text="The official Windows connector will be downloaded over HTTPS and installed as an automatic Windows service." Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,8,20,0" />
+                            </StackPanel>
+                            <Button x:Name="InstallButton" Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="Install tunnel" IsEnabled="False" Click="InstallTunnel_Click" VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid x:Name="LogsPage" Grid.Row="1" Margin="0,25,0,0" Visibility="Collapsed">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource SecondaryButton}" Content="Copy" Margin="0,0,8,0" Click="CopyLogs_Click" />
+                    <Button Style="{StaticResource SecondaryButton}" Content="Clear" Click="ClearLogs_Click" />
+                </StackPanel>
+                <Border Grid.Row="1" Background="#070B11" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Margin="0,12,0,0" Padding="18">
+                    <TextBox x:Name="LogTextBox" IsReadOnly="True" Background="Transparent" BorderThickness="0" FontFamily="Cascadia Mono, Consolas" FontSize="12" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                </Border>
+            </Grid>
+
+            <Border x:Name="ProgressPanel" Grid.Row="2" Background="#182131" CornerRadius="8" Padding="14,10" Margin="0,15,0,0" Visibility="Collapsed">
+                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><ProgressBar Width="100" Height="5" IsIndeterminate="True" Foreground="{StaticResource PrimaryBrush}"/><TextBlock x:Name="ProgressText" Grid.Column="1" Text="Working…" Margin="14,0,0,0" Foreground="{StaticResource MutedBrush}"/></Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

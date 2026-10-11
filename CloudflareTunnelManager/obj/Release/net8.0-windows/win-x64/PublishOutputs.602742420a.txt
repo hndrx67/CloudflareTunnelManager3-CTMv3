@@ -1,0 +1,7 @@
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\CloudflareTunnelManager.pdb
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\D3DCompiler_47_cor3.dll
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\PenImc_cor3.dll
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\PresentationNative_cor3.dll
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\vcruntime140_cor3.dll
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\wpfgfx_cor3.dll
+C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\public-release\CloudflareTunnelManager.exe

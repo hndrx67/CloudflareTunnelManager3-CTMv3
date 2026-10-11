@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CloudflareTunnelManager</id>
+    <version>1.0.0</version>
+    <authors>CloudflareTunnelManager</authors>
+    <description>Package Description</description>
+    <repository type="git" />
+    <dependencies>
+      <group targetFramework="net8.0-windows7.0" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net8.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\CloudflareTunnelManager\bin\Debug\net8.0-windows\CloudflareTunnelManager.runtimeconfig.json" target="lib\net8.0-windows7.0\CloudflareTunnelManager.runtimeconfig.json" />
+    <file src="C:\Users\ICT-ISS\Downloads\CloudflareTunnelManager-v3-source\CloudflareTunnelManager\bin\Debug\net8.0-windows\CloudflareTunnelManager.dll" target="lib\net8.0-windows7.0\CloudflareTunnelManager.dll" />
+  </files>
+</package>
